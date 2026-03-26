@@ -43,7 +43,7 @@
     <label for="">Status</label>
     <div>
         <x-form.radio name="status" :checked="$category->status"
-            :options="['active' =>'Active', 'draft'=>'Draft' ,'archived' =>'Archived']" />
+            :options="['active' =>'Active', 'draft'=>'Draft' ,'archvied' =>'Archived']" />
     </div>
 </div>
 

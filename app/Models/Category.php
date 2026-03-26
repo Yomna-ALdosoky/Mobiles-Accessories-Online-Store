@@ -62,4 +62,7 @@ class Category extends Model
         ];
 
     }
+    public function scopeActive(Builder $builder){
+        $builder->where('status', '=', 'active');
+    }
 }

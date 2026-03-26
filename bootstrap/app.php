@@ -11,7 +11,12 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        $middleware->web(append: [
+            \App\Http\Middleware\UpdateUserLastActiveAt::class,
+        ]);
+        $middleware->alias([
+            'auth.type' => \App\Http\Middleware\checkUserType::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

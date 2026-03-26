@@ -14,11 +14,11 @@ class ClearSeederDataSeeder extends Seeder
      */
     public function run(): void
     {
-         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
-    \App\Models\Product::truncate();
-    \App\Models\Category::truncate();
-    \App\Models\Store::truncate();
+        \App\Models\Product::truncate();
+        \App\Models\Category::truncate();
+        \App\Models\Store::truncate();
 
 
     DB::statement('SET FOREIGN_KEY_CHECKS=1;');

@@ -69,5 +69,15 @@ class Product extends Model
         return round(100-(100 *$this->price / $this->compare_price), 1);
     }
     
+    public function scopeFilter(Builder $builder, $filters){
+        $builder->when($filters['name'] ?? null, function ($query, $value) {
+            $query->where('name', 'LIKE', "%{$value}%");
+        });
+
+        $builder->when($filters['status'] ?? null, function ($query, $value) {
+            $query->where('status', 'LIKE', $value);
+        });
+    }
+    
 
 }

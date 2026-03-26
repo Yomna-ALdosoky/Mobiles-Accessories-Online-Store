@@ -92,108 +92,25 @@
                 </div>
             </div>
             <div class="row">
+                @foreach ($categories as $category)
                 <div class="col-lg-4 col-md-6 col-12">
                     <!-- Start Single Category -->
                     <div class="single-category">
-                        <h3 class="heading">TV & Audios</h3>
+                        <h3 class="heading">{{ $category->name }}</h3>
                         <ul>
-                            <li><a href="product-grids.html">Smart Television</a></li>
-                            <li><a href="product-grids.html">QLED TV</a></li>
-                            <li><a href="product-grids.html">Audios</a></li>
-                            <li><a href="product-grids.html">Headphones</a></li>
-                            <li><a href="product-grids.html">View All</a></li>
+                            @foreach ($category->products as $product)
+                            <li><a href="{{ route('products.show', $product->slug) }}">{{ $product->name }}</a></li>
+                            @endforeach
+                            <li><a href="{{ route('categories.show', $category->slug) }}">View All</a></li>
+
                         </ul>
                         <div class="images">
-                            <img src="{{ asset('assets/images/fetured-item-1.png') }}" alt="#">
+                            <img src="{{ asset('storage/' . $category->image) }}" alt="#">
                         </div>
                     </div>
                     <!-- End Single Category -->
                 </div>
-                <div class="col-lg-4 col-md-6 col-12">
-                    <!-- Start Single Category -->
-                    <div class="single-category">
-                        <h3 class="heading">Desktop & Laptop</h3>
-                        <ul>
-                            <li><a href="product-grids.html">Smart Television</a></li>
-                            <li><a href="product-grids.html">QLED TV</a></li>
-                            <li><a href="product-grids.html">Audios</a></li>
-                            <li><a href="product-grids.html">Headphones</a></li>
-                            <li><a href="product-grids.html">View All</a></li>
-                        </ul>
-                        <div class="images">
-                            <img src="{{ asset('assets/images/fetured-item-2.png') }}" alt="#">
-                        </div>
-                    </div>
-                    <!-- End Single Category -->
-                </div>
-                <div class="col-lg-4 col-md-6 col-12">
-                    <!-- Start Single Category -->
-                    <div class="single-category">
-                        <h3 class="heading">Cctv Camera</h3>
-                        <ul>
-                            <li><a href="product-grids.html">Smart Television</a></li>
-                            <li><a href="product-grids.html">QLED TV</a></li>
-                            <li><a href="product-grids.html">Audios</a></li>
-                            <li><a href="product-grids.html">Headphones</a></li>
-                            <li><a href="product-grids.html">View All</a></li>
-                        </ul>
-                        <div class="images">
-                            <img src="{{ asset('assets/images/fetured-item-3.png') }}" alt="#">
-                        </div>
-                    </div>
-                    <!-- End Single Category -->
-                </div>
-                <div class="col-lg-4 col-md-6 col-12">
-                    <!-- Start Single Category -->
-                    <div class="single-category">
-                        <h3 class="heading">Dslr Camera</h3>
-                        <ul>
-                            <li><a href="product-grids.html">Smart Television</a></li>
-                            <li><a href="product-grids.html">QLED TV</a></li>
-                            <li><a href="product-grids.html">Audios</a></li>
-                            <li><a href="product-grids.html">Headphones</a></li>
-                            <li><a href="product-grids.html">View All</a></li>
-                        </ul>
-                        <div class="images">
-                            <img src="{{ asset('assets/images/fetured-item-4.png') }}" alt="#">
-                        </div>
-                    </div>
-                    <!-- End Single Category -->
-                </div>
-                <div class="col-lg-4 col-md-6 col-12">
-                    <!-- Start Single Category -->
-                    <div class="single-category">
-                        <h3 class="heading">Smart Phones</h3>
-                        <ul>
-                            <li><a href="product-grids.html">Smart Television</a></li>
-                            <li><a href="product-grids.html">QLED TV</a></li>
-                            <li><a href="product-grids.html">Audios</a></li>
-                            <li><a href="product-grids.html">Headphones</a></li>
-                            <li><a href="product-grids.html">View All</a></li>
-                        </ul>
-                        <div class="images">
-                            <img src="{{ asset('assets/images/fetured-item-5.png') }}" alt="#">
-                        </div>
-                    </div>
-                    <!-- End Single Category -->
-                </div>
-                <div class="col-lg-4 col-md-6 col-12">
-                    <!-- Start Single Category -->
-                    <div class="single-category">
-                        <h3 class="heading">Game Console</h3>
-                        <ul>
-                            <li><a href="product-grids.html">Smart Television</a></li>
-                            <li><a href="product-grids.html">QLED TV</a></li>
-                            <li><a href="product-grids.html">Audios</a></li>
-                            <li><a href="product-grids.html">Headphones</a></li>
-                            <li><a href="product-grids.html">View All</a></li>
-                        </ul>
-                        <div class="images">
-                            <img src="{{ asset('assets/images/fetured-item-6.png') }}" alt="#">
-                        </div>
-                    </div>
-                    <!-- End Single Category -->
-                </div>
+                @endforeach
             </div>
         </div>
     </section>
@@ -219,215 +136,6 @@
                     <!-- End Single Product -->
                 </div>
                 @endforeach
-
-                {{-- <div class="col-lg-3 col-md-6 col-12">
-                    <!-- Start Single Product -->
-                    <div class="single-product">
-                        <div class="product-image">
-                            <img src="https://via.placeholder.com/335x335" alt="#">
-                            <span class="sale-tag">-25%</span>
-                            <div class="button">
-                                <a href="product-details.html" class="btn"><i class="lni lni-cart"></i> Add to Cart</a>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <span class="category">Speaker</span>
-                            <h4 class="title">
-                                <a href="product-grids.html">Big Power Sound Speaker</a>
-                            </h4>
-                            <ul class="review">
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><span>5.0 Review(s)</span></li>
-                            </ul>
-                            <div class="price">
-                                <span>$275.00</span>
-                                <span class="discount-price">$300.00</span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Single Product -->
-                </div>
-                <div class="col-lg-3 col-md-6 col-12">
-                    <!-- Start Single Product -->
-                    <div class="single-product">
-                        <div class="product-image">
-                            <img src="https://via.placeholder.com/335x335" alt="#">
-                            <div class="button">
-                                <a href="product-details.html" class="btn"><i class="lni lni-cart"></i> Add to Cart</a>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <span class="category">Camera</span>
-                            <h4 class="title">
-                                <a href="product-grids.html">WiFi Security Camera</a>
-                            </h4>
-                            <ul class="review">
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><span>5.0 Review(s)</span></li>
-                            </ul>
-                            <div class="price">
-                                <span>$399.00</span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Single Product -->
-                </div>
-                <div class="col-lg-3 col-md-6 col-12">
-                    <!-- Start Single Product -->
-                    <div class="single-product">
-                        <div class="product-image">
-                            <img src="https://via.placeholder.com/335x335" alt="#">
-                            <span class="new-tag">New</span>
-                            <div class="button">
-                                <a href="product-details.html" class="btn"><i class="lni lni-cart"></i> Add to Cart</a>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <span class="category">Phones</span>
-                            <h4 class="title">
-                                <a href="product-grids.html">iphone 6x plus</a>
-                            </h4>
-                            <ul class="review">
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><span>5.0 Review(s)</span></li>
-                            </ul>
-                            <div class="price">
-                                <span>$400.00</span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Single Product -->
-                </div>
-                <div class="col-lg-3 col-md-6 col-12">
-                    <!-- Start Single Product -->
-                    <div class="single-product">
-                        <div class="product-image">
-                            <img src="https://via.placeholder.com/335x335" alt="#">
-                            <div class="button">
-                                <a href="product-details.html" class="btn"><i class="lni lni-cart"></i> Add to Cart</a>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <span class="category">Headphones</span>
-                            <h4 class="title">
-                                <a href="product-grids.html">Wireless Headphones</a>
-                            </h4>
-                            <ul class="review">
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><span>5.0 Review(s)</span></li>
-                            </ul>
-                            <div class="price">
-                                <span>$350.00</span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Single Product -->
-                </div>
-                <div class="col-lg-3 col-md-6 col-12">
-                    <!-- Start Single Product -->
-                    <div class="single-product">
-                        <div class="product-image">
-                            <img src="https://via.placeholder.com/335x335" alt="#">
-                            <div class="button">
-                                <a href="product-details.html" class="btn"><i class="lni lni-cart"></i> Add to Cart</a>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <span class="category">Speaker</span>
-                            <h4 class="title">
-                                <a href="product-grids.html">Mini Bluetooth Speaker</a>
-                            </h4>
-                            <ul class="review">
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star"></i></li>
-                                <li><span>4.0 Review(s)</span></li>
-                            </ul>
-                            <div class="price">
-                                <span>$70.00</span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Single Product -->
-                </div>
-                <div class="col-lg-3 col-md-6 col-12">
-                    <!-- Start Single Product -->
-                    <div class="single-product">
-                        <div class="product-image">
-                            <img src="https://via.placeholder.com/335x335" alt="#">
-                            <span class="sale-tag">-50%</span>
-                            <div class="button">
-                                <a href="product-details.html" class="btn"><i class="lni lni-cart"></i> Add to Cart</a>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <span class="category">Headphones</span>
-                            <h4 class="title">
-                                <a href="product-grids.html">PX7 Wireless Headphones</a>
-                            </h4>
-                            <ul class="review">
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star"></i></li>
-                                <li><span>4.0 Review(s)</span></li>
-                            </ul>
-                            <div class="price">
-                                <span>$100.00</span>
-                                <span class="discount-price">$200.00</span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Single Product -->
-                </div>
-                <div class="col-lg-3 col-md-6 col-12">
-                    <!-- Start Single Product -->
-                    <div class="single-product">
-                        <div class="product-image">
-                            <img src="https://via.placeholder.com/335x335" alt="#">
-                            <div class="button">
-                                <a href="product-details.html" class="btn"><i class="lni lni-cart"></i> Add to Cart</a>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <span class="category">Laptop</span>
-                            <h4 class="title">
-                                <a href="product-grids.html">Apple MacBook Air</a>
-                            </h4>
-                            <ul class="review">
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><span>5.0 Review(s)</span></li>
-                            </ul>
-                            <div class="price">
-                                <span>$899.00</span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Single Product -->
-                </div> --}}
             </div>
         </div>
     </section>
@@ -438,7 +146,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-12">
-                    <div class="single-banner" style="background-image:url('https://via.placeholder.com/620x340')">
+                    <div class="single-banner"
+                        style="background-image:url('{{ asset('assets/images/banner-1-bg.jpg') }}')">
                         <div class="content">
                             <h2>Smart Watch 2.0</h2>
                             <p>Space Gray Aluminum Case with <br>Black/Volt Real Sport Band </p>
@@ -450,7 +159,7 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
                     <div class="single-banner custom-responsive-margin"
-                        style="background-image:url('https://via.placeholder.com/620x340')">
+                        style="background-image:url('{{ asset('assets/images/banner-2-bg.jpg') }}')">
                         <div class="content">
                             <h2>Smart Headphone</h2>
                             <p>Lorem ipsum dolor sit amet, <br>eiusmod tempor
@@ -485,7 +194,7 @@
                             <!-- Start Single Product -->
                             <div class="single-product">
                                 <div class="product-image">
-                                    <img src="https://via.placeholder.com/335x335" alt="#">
+                                    <img src="{{ asset('assets/images/fetured-item-3.png') }}" alt="#">
                                     <div class="button">
                                         <a href="product-details.html" class="btn"><i class="lni lni-cart"></i> Add to
                                             Cart</a>
@@ -515,7 +224,7 @@
                             <!-- Start Single Product -->
                             <div class="single-product">
                                 <div class="product-image">
-                                    <img src="https://via.placeholder.com/335x335" alt="#">
+                                    <img src="{{ asset('assets/images/product-8.jpg') }}" alt="#">
                                     <div class="button">
                                         <a href="product-details.html" class="btn"><i class="lni lni-cart"></i> Add to
                                             Cart</a>
@@ -545,7 +254,7 @@
                             <!-- Start Single Product -->
                             <div class="single-product">
                                 <div class="product-image">
-                                    <img src="https://via.placeholder.com/335x335" alt="#">
+                                    <img src="{{ asset('assets/images/product-6.jpg') }}" alt="#">
                                     <div class="button">
                                         <a href="product-details.html" class="btn"><i class="lni lni-cart"></i> Add to
                                             Cart</a>
@@ -574,7 +283,7 @@
                     </div>
                     <!-- Start Banner -->
                     <div class="single-banner right"
-                        style="background-image:url('https://via.placeholder.com/730x310');margin-top: 30px;">
+                        style="background-image:url('{{ asset('assets/images/banner-3-bg.jpg') }}');margin-top: 30px;">
                         <div class="content">
                             <h2>Samsung Notebook 9 </h2>
                             <p>Lorem ipsum dolor sit amet, <br>eiusmod tempor
@@ -592,7 +301,7 @@
                 <div class="col-lg-4 col-md-12 col-12">
                     <div class="offer-content">
                         <div class="image">
-                            <img src="https://via.placeholder.com/510x600" alt="#">
+                            <img src="{{ asset('assets/images/product-5.jpg') }}" alt="#">
                             <span class="sale-tag">-50%</span>
                         </div>
                         <div class="text">
@@ -649,7 +358,7 @@
                     <!-- Start Single List -->
                     <div class="single-list">
                         <div class="list-image">
-                            <a href="product-grids.html"><img src="https://via.placeholder.com/100x100" alt="#"></a>
+                            <a href="product-grids.html"><img src="{{ asset('assets/images/01.jpg') }}" alt="#"></a>
                         </div>
                         <div class="list-info">
                             <h3>
@@ -662,7 +371,7 @@
                     <!-- Start Single List -->
                     <div class="single-list">
                         <div class="list-image">
-                            <a href="product-grids.html"><img src="https://via.placeholder.com/100x100" alt="#"></a>
+                            <a href="product-grids.html"><img src="{{ asset('assets/images/02.jpg') }}" alt="#"></a>
                         </div>
                         <div class="list-info">
                             <h3>
@@ -675,7 +384,7 @@
                     <!-- Start Single List -->
                     <div class="single-list">
                         <div class="list-image">
-                            <a href="product-grids.html"><img src="https://via.placeholder.com/100x100" alt="#"></a>
+                            <a href="product-grids.html"><img src="{{ asset('assets/images/03.jpg') }}" alt="#"></a>
                         </div>
                         <div class="list-info">
                             <h3>
@@ -691,7 +400,7 @@
                     <!-- Start Single List -->
                     <div class="single-list">
                         <div class="list-image">
-                            <a href="product-grids.html"><img src="https://via.placeholder.com/100x100" alt="#"></a>
+                            <a href="product-grids.html"><img src="{{ asset('assets/images/04.jpg') }}" alt="#"></a>
                         </div>
                         <div class="list-info">
                             <h3>
@@ -704,7 +413,7 @@
                     <!-- Start Single List -->
                     <div class="single-list">
                         <div class="list-image">
-                            <a href="product-grids.html"><img src="https://via.placeholder.com/100x100" alt="#"></a>
+                            <a href="product-grids.html"><img src="{{ asset('assets/images/05.jpg') }}" alt="#"></a>
                         </div>
                         <div class="list-info">
                             <h3>
@@ -717,7 +426,7 @@
                     <!-- Start Single List -->
                     <div class="single-list">
                         <div class="list-image">
-                            <a href="product-grids.html"><img src="https://via.placeholder.com/100x100" alt="#"></a>
+                            <a href="product-grids.html"><img src="{{ asset('assets/images/06.jpg') }}" alt="#"></a>
                         </div>
                         <div class="list-info">
                             <h3>
@@ -733,7 +442,7 @@
                     <!-- Start Single List -->
                     <div class="single-list">
                         <div class="list-image">
-                            <a href="product-grids.html"><img src="https://via.placeholder.com/100x100" alt="#"></a>
+                            <a href="product-grids.html"><img src="{{ asset('assets/images/07.jpg') }}" alt="#"></a>
                         </div>
                         <div class="list-info">
                             <h3>
@@ -746,7 +455,7 @@
                     <!-- Start Single List -->
                     <div class="single-list">
                         <div class="list-image">
-                            <a href="product-grids.html"><img src="https://via.placeholder.com/100x100" alt="#"></a>
+                            <a href="product-grids.html"><img src="{{ asset('assets/images/08.jpg') }}" alt="#"></a>
                         </div>
                         <div class="list-info">
                             <h3>
@@ -759,7 +468,7 @@
                     <!-- Start Single List -->
                     <div class="single-list">
                         <div class="list-image">
-                            <a href="product-grids.html"><img src="https://via.placeholder.com/100x100" alt="#"></a>
+                            <a href="product-grids.html"><img src="{{ asset('assets/images/09.jpg') }}" alt="#"></a>
                         </div>
                         <div class="list-info">
                             <h3>
@@ -786,28 +495,28 @@
             <div class="brands-logo-wrapper">
                 <div class="brands-logo-carousel d-flex align-items-center justify-content-between">
                     <div class="brand-logo">
-                        <img src="https://via.placeholder.com/220x160" alt="#">
+                        <img src="{{ asset('assets/images/01.png') }}" alt="#">
                     </div>
                     <div class="brand-logo">
-                        <img src="https://via.placeholder.com/220x160" alt="#">
+                        <img src="{{ asset('assets/images/02.png') }}" alt="#">
                     </div>
                     <div class="brand-logo">
-                        <img src="https://via.placeholder.com/220x160" alt="#">
+                        <img src="{{ asset('assets/images/04.png') }}" alt="#">
                     </div>
                     <div class="brand-logo">
-                        <img src="https://via.placeholder.com/220x160" alt="#">
+                        <img src="{{ asset('assets/images/05.png') }}" alt="#">
                     </div>
                     <div class="brand-logo">
-                        <img src="https://via.placeholder.com/220x160" alt="#">
+                        <img src="{{ asset('assets/images/06.png') }}" alt="#">
                     </div>
                     <div class="brand-logo">
-                        <img src="https://via.placeholder.com/220x160" alt="#">
+                        <img src="{{ asset('assets/images/01.png') }}" alt="#">
                     </div>
                     <div class="brand-logo">
-                        <img src="https://via.placeholder.com/220x160" alt="#">
+                        <img src="{{ asset('assets/images/02.png') }}" alt="#">
                     </div>
                     <div class="brand-logo">
-                        <img src="https://via.placeholder.com/220x160" alt="#">
+                        <img src="{{ asset('assets/images/04.png') }}" alt="#">
                     </div>
                 </div>
             </div>
@@ -833,7 +542,7 @@
                     <div class="single-blog">
                         <div class="blog-img">
                             <a href="blog-single-sidebar.html">
-                                <img src="https://via.placeholder.com/370x215" alt="#">
+                                <img src="{{ asset('assets/images/blog-1.jpg') }}" alt="#">
                             </a>
                         </div>
                         <div class="blog-content">
@@ -855,7 +564,7 @@
                     <div class="single-blog">
                         <div class="blog-img">
                             <a href="blog-single-sidebar.html">
-                                <img src="https://via.placeholder.com/370x215" alt="#">
+                                <img src="{{ asset('assets/images/blog-2.jpg') }}" alt="#">
                             </a>
                         </div>
                         <div class="blog-content">
@@ -877,7 +586,7 @@
                     <div class="single-blog">
                         <div class="blog-img">
                             <a href="blog-single-sidebar.html">
-                                <img src="https://via.placeholder.com/370x215" alt="#">
+                                <img src="{{ asset('assets/images/blog-3.jpg') }}" alt="#">
                             </a>
                         </div>
                         <div class="blog-content">

@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Str;
 
 class ProductsController extends Controller
@@ -14,9 +16,12 @@ class ProductsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+
+    use AuthorizesRequests;
+
+    public function index(Request $request)
     {
-        $products = Product::with(['category', 'store'])->paginate(7);
+        $products = Product::with(['category', 'store'])->filter($request->query())->whereHas('category')->whereHas('store')->paginate(10);
         return view('dashboard.products.index', compact('products'));
     }
 
@@ -26,7 +31,10 @@ class ProductsController extends Controller
     public function create()
     {
         $product = new Product();
-        return view('dashboard.products.create', compact('product'));
+        $categories = Category::all();
+        $tags='';
+        return view('dashboard.products.create', compact('product', 'tags', 'categories'));
+        
     }
 
     /**
@@ -34,7 +42,20 @@ class ProductsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name'        => 'required|string|',
+            'category_id' => 'required|exists:categories,id',
+            'store_id'    => ' required|exists:stores,id',
+            'price'       =>'required|numeric|min:0',
+            'image'       => 'required|image|max:2048',
+            'status'      => 'nullable|in:active,draft,archvied',
+        ]);
+
+        $request->merge([
+            'slug' => Str::slug($request->post('name')),
+            'store_id' => Auth::user()->store_id,
+        ]);
+       
     }
 
     /**
@@ -94,4 +115,13 @@ class ProductsController extends Controller
         // $products = Product::onlyTrashed()->paginate(7);
         // return view('dashboard.products.trash', compact('products'));
     }
+
+    protected function uploadImage(Request $request)
+    {
+        if (!$request->hasFile('image')) {
+            return null;
+        }
+        return $request->file('image')->store('products', 'public');
+    }
+
 }

@@ -9,17 +9,6 @@
 
 @section('content')
 
-
-
-
-{{-- <div class="mb-5"> --}}
-    {{-- <a href="{{ route('dashboard.products.create') }}" class="btn btn-sm btn-outline-primary mr-2">Create</a> --}}
-    {{-- <a href="{{ route('dashboard.products.create') }}" class="btn btn-primary">
-        + Create Product
-    </a> --}}
-    {{-- <a href="{{ route('dashboard.products.trash') }}" class="btn btn-sm btn-outline-dark">Trash</a> --}}
-    {{-- </div> --}}
-
 <div class="d-flex justify-content-between align-items-center mb-5 ">
     <div class="d-flex gap-2">
         <a href="{{ route('dashboard.products.create') }}" class="btn btn-primary mx-2">
@@ -36,7 +25,9 @@
         <select name="status" class="form-control form-control-sm mx-2" style="width: 180px">
             <option value="">All</option>
             <option value="active" @selected(request('status')=='active' )>Active</option>
+            <option value="draft" @selected(request('status')=='draft' )>Draft</option>
             <option value="archived" @selected(request('status')=='archived' )>Archived</option>
+
         </select>
 
         <button class="btn btn-info btn-sm mx-1 d-flex align-items-center">
@@ -47,33 +38,6 @@
 
 <x-alert type="success" />
 <x-alert type="info" />
-
-
-
-{{-- <form action="{{ URL::current() }}" method="get" class="d-flex align-items-center gap-3 mb-4 mx-2">
-    <x-form.input name="name" placeholder="Name" class="form-control form-control-sm" :value="request('name')"
-        style="width: 180px" />
-
-    <select name="status" class="form-control form-control-sm mx-2" style="width: 180px">
-        <option value="">All</option>
-        <option value="active" @selected(request('status')=='active' )>Active</option>
-        <option value="archived" @selected(request('status')=='archived' )>Archived</option>
-    </select>
-    <button class="btn btn-dark mx-2">Filter</button>
-
-</form> --}}
-
-
-{{-- <form action="{{ URL::current() }}" method="get" class="d-flex justify-content-between mb-4">
-    <x-form.input name="name" placeholder="Name" class="mx-2" :value="request('name')" />
-    <select name="status" class="form-control mx-2">
-        <option value="">All</option>
-        <option value="active" @selected(request('status')=='active' )>Active</option>
-        <option value="archived" @selected(request('status')=='archived' )>Archived</option>
-    </select>
-    <button class="btn btn-dark mx-2">Filter</button>
-</form> --}}
-
 
 <table class="table">
     <thead>

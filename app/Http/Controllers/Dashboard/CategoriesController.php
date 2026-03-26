@@ -52,7 +52,7 @@ class CategoriesController extends Controller
      */
     public function store(Request $request)
     {
-        $clean_data=$request->validate(Category::rules(), [
+        $clean_data =$request->validate(Category::rules(), [
             'required' => 'this field (:attribute) isrequired',
             'name.unique'=> 'this name is already exists!'
         ]);
@@ -143,11 +143,11 @@ class CategoriesController extends Controller
         if(!$request->hasFile('image')){
             return;
         }
-            $file= $request->file('image');
-            $path= $file->store('uploads', [
-                'disk' =>'public'
-            ]);
-            return $path;
+        $file= $request->file('image');
+        $path= $file->store('uploads', [
+            'disk' =>'public'
+        ]);
+        return $path;
     }
 
     public function trash(){
