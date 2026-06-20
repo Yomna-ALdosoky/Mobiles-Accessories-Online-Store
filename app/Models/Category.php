@@ -15,54 +15,73 @@ class Category extends Model
     use SoftDeletes, HasFactory;
 
     protected $fillable = [
-        'name', 'parent_id', 'slug', 'description', 'image', 'status',
+        'name',
+        'parent_id',
+        'slug',
+        'description',
+        'image',
+        'status',
     ];
 
-    public function products(){
+    public function products()
+    {
         return $this->hasMany(Product::class, 'category_id', 'id');
     }
 
-    public function parent(){
+    public function parent()
+    {
         return $this->belongsTo(Category::class, 'parent_id', 'id')->withDefault([
-            'name'=>'Main Category'
-            ]);
+            'name' => 'Main Category'
+        ]);
     }
-    public function children(){
+
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
+
+    public function children()
+    {
         return $this->hasMany(Category::class, 'parent_id', 'id');
     }
 
-    public function scopeFilter(Builder $builder, $filters){
+    public function scopeFilter(Builder $builder, $filters)
+    {
 
-        $builder->when($filters['name'] ?? false, function($builder, $value) {
+        $builder->when($filters['name'] ?? false, function ($builder, $value) {
             $builder->where('categories.name', 'LIKE', "%{$value}%");
         });
-        $builder->when($filters['status'] ?? false, function($builder, $value){
+        $builder->when($filters['status'] ?? false, function ($builder, $value) {
             $builder->where('categories.status', '=', $value);
         });
-
     }
 
-    public static function rules($id = 0){
+    public static function rules($id = 0)
+    {
         return [
-         'name' => [
-            'required',
-            'string',
-            'min:3',
-            'max:255',
-            Rule::unique('categories', 'name')->ignore($id),
-            'fillter:php,laravel,html',
-        ],
+            'name' => [
+                'required',
+                'string',
+                'min:3',
+                'max:255',
+                Rule::unique('categories', 'name')->ignore($id),
+                'fillter:php,laravel,html',
+            ],
             'parent_id' => [
-                'nullable','integer', 'exists:categories,id'
+                'nullable',
+                'integer',
+                'exists:categories,id'
             ],
             'image' => [
-                'image', 'max:1048576', 'dimensions:min_width=100,min_height=100',
+                'image',
+                'max:1048576',
+                'dimensions:min_width=100,min_height=100',
             ],
             'status' => 'required|in:active,archived',
         ];
-
     }
-    public function scopeActive(Builder $builder){
+    public function scopeActive(Builder $builder)
+    {
         $builder->where('status', '=', 'active');
     }
 }

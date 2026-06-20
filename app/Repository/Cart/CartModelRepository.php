@@ -11,7 +11,8 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Cookie;
 
 
-class CartModelRepository implements CartRepository {
+class CartModelRepository implements CartRepository
+{
 
     protected $items;
     public function __construct()
@@ -19,17 +20,19 @@ class CartModelRepository implements CartRepository {
         $this->items = collect([]);
     }
 
-    public function get() : Collection {
-        if(!$this->items->count()){
+    public function get(): Collection
+    {
+        if (!$this->items->count()) {
             $this->items = Cart::with('product')->get();
         }
         return $this->items;
     }
 
-    public function add(Product $product, $quantity = 1) {
+    public function add(Product $product, $quantity = 1)
+    {
         $item = Cart::where('product_id', '=', $product->id)
-        ->first();
-        if(!$item){
+            ->first();
+        if (!$item) {
             $cart = Cart::create([
                 'user_id' => Auth::id(),
                 'product_id' => $product->id,
@@ -41,27 +44,29 @@ class CartModelRepository implements CartRepository {
         return $item->increment('quantity', $quantity);
     }
 
-    public function update($id, $quantity=1){
+    public function update($id, $quantity = 1)
+    {
         return Cart::where('id', '=', $id)
-        ->update([
-            'quantity' => $quantity,
-        ]);
+            ->update([
+                'quantity' => $quantity,
+            ]);
 
         return Cart::with('product')->find($id);
-
     }
 
-    public function delete($id){
+    public function delete($id)
+    {
         return Cart::where('id', '=', $id)
-        ->delete();
-
+            ->delete();
     }
-    public function empty(){
+    public function empty()
+    {
         Cart::query()->delete();
     }
 
-    public function total() : float{
-        return $this->get()->sum(function($item){
+    public function total(): float
+    {
+        return $this->get()->sum(function ($item) {
             return $item->quantity * $item->product->price;
         });
         // return (float) Cart::join('products', 'product_id', '=', 'carts.product_id')

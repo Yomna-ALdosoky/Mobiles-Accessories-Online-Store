@@ -12,6 +12,7 @@ return [
         'route' => 'dashboard.categories.index',
         'title' => 'Categories',
         'active' => 'dashboard.categories.*',
+        // 'ability' => 'categories.view',
 
     ],
     [
@@ -19,12 +20,25 @@ return [
         'route' => 'dashboard.products.index',
         'title' => 'Products',
         'active' => 'dashboard.products.*',
+        // 'ability' => 'products.view',
+
+    ],
+    [
+        'icon' => 'nav-icon fas fa-store',
+        'route' => 'dashboard.roles.index',
+        'title' => 'Roles',
+        'active' => 'dashboard.roles.*',
+        // 'ability' => 'roles.view',
 
     ],
     // [
-    //     'icon' => 'far fa-circle nav-icon',
-    //     'route' => 'dashboard.dashboard.index',
-    //     'title' => 'Dashboard',
+    //     'icon' => 'nav-icon fas fa-store',
+    //     'route' => 'dashboard.orders.index',
+    //     'title' => 'orders',
+    //     'active' => 'dashboard.orders.*',
+    //     'ability' => 'orders.view',
+
     // ],
+
 
 ];

@@ -11,16 +11,19 @@
 
 <div class="d-flex justify-content-between align-items-center mb-5 ">
     <div class="d-flex gap-2">
+        @can('categories.create')
         <a href="{{ route('dashboard.categories.create') }}" class="btn btn-primary mx-2">
             + Create Product
         </a>
+        @endcan
         <a href="{{ route('dashboard.categories.trash') }}" class="btn btn-danger">
             <i class="fas fa-trash-alt me-1"></i> Trash
         </a>
     </div>
 
     <form action="{{ URL::current() }}" method="get" class="d-flex align-items-center gap-3 mx-2">
-        <x-form.input name="name" placeholder="Name" class="form-control form-control-sm" :value="request('name')" style="width: 180px" />
+        <x-form.input name="name" placeholder="Name" class="form-control form-control-sm" :value="request('name')"
+            style="width: 180px" />
 
         <select name="status" class="form-control form-control-sm mx-2" style="width: 180px">
             <option value="">All</option>
@@ -60,7 +63,8 @@
             {{-- <td class="p-4">{{ $category->id }}</td> --}}
             <td class="p-4 text-center">{{ $i++ }}</td>
             <td class="p-4 text-center">
-                <img src="{{ asset('storage/' . $category->image) }}" alt="" class="rounded-circle object-fit-cover" width="70" height="70">
+                <img src="{{ asset('storage/' . $category->image) }}" alt="" class="rounded-circle object-fit-cover"
+                    width="70" height="70">
             </td>
             <td class="p-4 text-center"><a href="{{ route('dashboard.categories.show', $category->id) }}">{{
                     $category->name }} </a></td>
@@ -75,11 +79,15 @@
             <td class="p-4 text-center">{{ $category->created_at->format('d M, Y h:i A') }}</td>
 
             <td class="p-4 text-center">
-                <a href="{{ route('dashboard.categories.edit', $category->id) }}" class="btn btn-sm btn-outline-success me-2" title="Edit">
+                @can('categories.update')
+                <a href="{{ route('dashboard.categories.edit', $category->id) }}"
+                    class="btn btn-sm btn-outline-success me-2" title="Edit">
                     <i class="fas fa-edit"></i>
                 </a>
-
-                <form action="{{ route('dashboard.categories.destroy', $category->id) }}" method="post" class="d-inline">
+                @endcan
+                @can('categories.delete')
+                <form action="{{ route('dashboard.categories.destroy', $category->id) }}" method="post"
+                    class="d-inline">
                     @csrf
                     <input type="hidden" name="method" value="delete">
                     @method('delete')
@@ -87,23 +95,8 @@
                         <i class="fas fa-trash"></i>
                     </button>
                 </form>
+                @endcan
             </td>
-
-            {{-- <td class="p-4 text-center">
-                <a href="{{ route('dashboard.categories.edit', $category->id) }}"
-            class="btn btn-sm btn-outline-success">Edit</a>
-            </td>
-            <td class="p-4 text-center">
-
-                <form action="{{ route('dashboard.categories.destroy', $category->id) }}" method="post">
-                    @csrf
-                    <input type="hidden" name="method" value="delete">
-                    @method('delete')
-                    <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
-                </form>
-
-            </td> --}}
-
         </tr>
         @empty
         <tr>
@@ -113,7 +106,6 @@
     </tbody>
 
 </table>
-{{-- {{ $categories->withQueryString()->appends(['search' => 1])->links() }} --}}
 
 {{ $categories->withQueryString()->links() }}
 @endsection

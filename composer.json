@@ -10,9 +10,16 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "laravel/fortify": "^1.36",
         "laravel/framework": "^12.0",
+        "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.10.1",
-        "symfony/intl": "^7.4"
+        "mcamara/laravel-localization": "^2.4",
+        "pusher/pusher-php-server": "^7.2",
+        "railsware/mailtrap-php": "^3.11",
+        "symfony/http-client": "^7.4",
+        "symfony/intl": "^7.4",
+        "symfony/mailtrap-mailer": "^7.4"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

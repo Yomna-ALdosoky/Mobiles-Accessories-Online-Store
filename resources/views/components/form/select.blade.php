@@ -1,20 +1,22 @@
-@props(['name', 'options', 'selected' => null])
+@props([
+'name', 'options', 'selected' => '', 'label' => false,
+])
+
+@if($label)
+<label for="">{{ $label }}</label>
+@endif
 
 <div class="form-group">
-    <label for="{{ $name }}">{{ ucfirst($name) }}</label> 
-    <select 
-        name="{{ $name }}" 
-        id="{{ $name }}" 
-        {{ $attributes->class([
-            'form-control',
-            'form-select',
-            'is-invalid' => $errors->has($name)
+    <select name="{{ $name }}" id="{{ $name }}" {{ $attributes->class([
+        'form-control',
+        'form-select',
+        'is-invalid' => $errors->has($name)
         ]) }}
-    >
+        >
         @foreach ($options as $value => $text)
-            <option value="{{ $value }}" @selected($value == $selected)>{{ $text }}</option>    
+        <option value="{{ $value }}" @selected($value==$selected)>{{ $text }}</option>
         @endforeach
-    </select> 
+    </select>
 
     <x-form.validation-feedback :name="$name" />
 </div>

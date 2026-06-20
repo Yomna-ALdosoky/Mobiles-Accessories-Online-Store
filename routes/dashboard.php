@@ -7,12 +7,13 @@ use App\Http\Controllers\Dashboard\CategoriesController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\ProductsController;
 use App\Http\Controllers\Dashboard\ProfileController;
+use App\Http\Controllers\Dashboard\RolesController;
 use App\Http\Middleware\checkUserType;
 
 Route::group([
-    'middleware'=> ['auth', 'auth.type:admin,super-admin'],
-    'prefix'=> 'dashboard',
-    'as' => 'dashboard.'
+    'middleware' => ['auth:admin'],
+    'as' => 'dashboard.',
+    'prefix' => 'admin/dashboard'
 
 ], function () {
     Route::get('profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -28,5 +29,5 @@ Route::group([
 
     Route::get('products/trash', [ProductsController::class, 'trash'])->name('products.trash');
     Route::resource('/products', ProductsController::class);
+    Route::resource('/roles', RolesController::class);
 });
-
