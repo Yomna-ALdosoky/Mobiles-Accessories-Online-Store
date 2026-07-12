@@ -30,19 +30,17 @@
                             </div>
                             <div class="social-login">
                                 <div class="row">
-                                    <div class="col-lg-4 col-md-4 col-12">
-                                        <a class="btn facebook-btn" href="javascript:void(0)">
-                                            <i class="lni lni-facebook-filled"></i> {{ __('Facebook login') }}
-                                        </a>
-                                    </div>
-                                    <div class="col-lg-4 col-md-4 col-12">
-                                        <a class="btn twitter-btn" href="javascript:void(0)">
-                                            <i class="lni lni-twitter-original"></i> {{ __('Twitter login') }}
-                                        </a>
-                                    </div>
-                                    <div class="col-lg-4 col-md-4 col-12">
-                                        <a class="btn google-btn" href="javascript:void(0)">
+                                    <div class="col-12 mb-2">
+                                        <a class="btn google-btn w-100"
+                                            href="{{ route('auth.socilaite.redirect', 'google') }}">
                                             <i class="lni lni-google"></i> {{ __('Google login') }}
+                                        </a>
+                                    </div>
+
+                                    <div class="col-12 mb-2">
+                                        <a class="btn facebook-btn w-100"
+                                            href="{{ route('auth.socilaite.redirect', 'facebook') }}">
+                                            <i class="lni lni-facebook-filled"></i> {{ __('Facebook login') }}
                                         </a>
                                     </div>
                                 </div>

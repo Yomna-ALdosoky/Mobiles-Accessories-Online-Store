@@ -10,9 +10,9 @@
 @section('content')
 
 <div class="mb-5">
-    {{-- @can('create', 'App\Models\Role') --}}
+    @can('create', 'App\Models\Role')
     <a href="{{ route('dashboard.roles.create') }}" class="btn btn-sm btn-outline-primary mr-2">Create</a>
-    {{-- @endcan --}}
+    @endcan
 </div>
 
 <x-alert type="success" />

@@ -33,6 +33,10 @@ class CategoriesController extends Controller
      */
     public function create()
     {
+        // if (Gate::denies('category.create')) {
+        //     abort('403');
+        // }
+
         Gate::authorize('categories.create');
 
         $parents = Category::all();

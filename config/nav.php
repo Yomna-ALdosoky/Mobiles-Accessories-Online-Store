@@ -24,21 +24,28 @@ return [
 
     ],
     [
-        'icon' => 'nav-icon fas fa-store',
+        'icon' => 'nav-icon fas fa-user-lock',
         'route' => 'dashboard.roles.index',
         'title' => 'Roles',
         'active' => 'dashboard.roles.*',
         // 'ability' => 'roles.view',
 
     ],
-    // [
-    //     'icon' => 'nav-icon fas fa-store',
-    //     'route' => 'dashboard.orders.index',
-    //     'title' => 'orders',
-    //     'active' => 'dashboard.orders.*',
-    //     'ability' => 'orders.view',
+    [
+        'icon' => 'nav-icon fas fa-users-cog',
+        'route' => 'dashboard.admins.index',
+        'title' => 'admins',
+        'active' => 'dashboard.admins.*',
+        // 'ability' => 'admins.view',
 
-    // ],
+    ],
+    [
+        'icon' => 'nav-icon fas fa-user-friends',
+        'route' => 'dashboard.users.index',
+        'title' => 'users',
+        'active' => 'dashboard.users.*',
+        // 'ability' => 'users.view',
 
+    ],
 
 ];

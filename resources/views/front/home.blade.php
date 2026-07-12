@@ -2,6 +2,7 @@
     <!-- Start Hero Area -->
     <section class="hero-area">
         <div class="container">
+            <x-alert type="info" />
             <div class="row">
                 <div class="col-lg-8 col-12 custom-padding-right">
                     <div class="slider-head">
@@ -82,6 +83,7 @@
     <!-- Start Featured Categories Area -->
     <section class="featured-categories section">
         <div class="container">
+
             <div class="row">
                 <div class="col-12">
                     <div class="section-title">

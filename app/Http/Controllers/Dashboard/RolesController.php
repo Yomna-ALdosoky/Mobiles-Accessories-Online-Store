@@ -6,16 +6,18 @@ use App\Http\Controllers\Controller;
 use App\Models\Role;
 use App\Models\RoleAbility;
 use Illuminate\Http\Request;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+// use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class RolesController extends Controller
 {
-    use AuthorizesRequests;
+    // use AuthorizesRequests;
 
     // public function __construct()
     // {
     //     $this->authorizeResource(Role::class, 'role');
     // }
+
+
 
     /**
      * Display a listing of the resource.

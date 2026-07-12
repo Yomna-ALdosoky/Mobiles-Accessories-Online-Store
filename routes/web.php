@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\SocialLoginController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\front\auth\TwoFactorAuthenticationController;
 use App\Http\Controllers\front\CartController;
@@ -38,6 +39,10 @@ Route::group([
 
     require base_path('vendor/laravel/fortify/routes/routes.php');
 });
+Route::get('auth/{provider}/redirect', [SocialLoginController::class, 'redirect'])
+    ->name('auth.socilaite.redirect');
+Route::get('auth/{provider}/callback', [SocialLoginController::class, 'callback'])
+    ->name('auth.socilaite.callback');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

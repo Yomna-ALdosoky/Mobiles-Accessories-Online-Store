@@ -2,18 +2,15 @@
 
 namespace App\Providers;
 
-use App\Events\OrderCreated;
-use App\Listeners\DeductProductQuantity;
-use App\Listeners\EmptyCart;
-use App\Listeners\SendCreateNotification;
 use App\Services\CurrencyConverter;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Laravel\Fortify\Fortify;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Event;
+use SocialiteProviders\Manager\SocialiteWasCalled;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -43,6 +40,12 @@ class AppServiceProvider extends ServiceProvider
     {
         Fortify::ignoreRoutes();
 
+        Gate::before(function ($user, $ability) {
+            if ($user->super_admin) {
+                return true;
+            }
+        });
+
         foreach ($this->app->make('abilities') as $code => $lable) {
             Gate::define($code, function ($user) use ($code) {
                 return $user->hasAbility($code);
@@ -56,5 +59,9 @@ class AppServiceProvider extends ServiceProvider
         }, 'the value is prohipted');
 
         Paginator::useBootstrapFive();
+
+        Event::listen(function (SocialiteWasCalled $event) {
+            $event->extendSocialite('apple', \SocialiteProviders\Apple\Provider::class);
+        });
     }
 }

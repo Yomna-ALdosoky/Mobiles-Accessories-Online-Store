@@ -13,6 +13,11 @@ use Illuminate\Support\Str;
 
 class ProductsController extends Controller
 {
+
+    // public function __construct()
+    // {
+    //     $this->authorizeResource(Product::class, 'product');
+    // }
     /**
      * Display a listing of the resource.
      */
@@ -21,6 +26,7 @@ class ProductsController extends Controller
 
     public function index(Request $request)
     {
+        $this->authorize('viewAny', Product::class);
         $products = Product::with(['category', 'store'])->filter($request->query())->whereHas('category')->whereHas('store')->paginate(10);
         return view('dashboard.products.index', compact('products'));
     }
@@ -30,11 +36,11 @@ class ProductsController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Product::class);
         $product = new Product();
         $categories = Category::all();
-        $tags='';
+        $tags = '';
         return view('dashboard.products.create', compact('product', 'tags', 'categories'));
-        
     }
 
     /**
@@ -42,11 +48,12 @@ class ProductsController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', Product::class);
         $request->validate([
             'name'        => 'required|string|',
             'category_id' => 'required|exists:categories,id',
             'store_id'    => ' required|exists:stores,id',
-            'price'       =>'required|numeric|min:0',
+            'price'       => 'required|numeric|min:0',
             'image'       => 'required|image|max:2048',
             'status'      => 'nullable|in:active,draft,archvied',
         ]);
@@ -55,7 +62,6 @@ class ProductsController extends Controller
             'slug' => Str::slug($request->post('name')),
             'store_id' => Auth::user()->store_id,
         ]);
-       
     }
 
     /**
@@ -63,7 +69,8 @@ class ProductsController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $product = Product::findOrFail($id);
+        $this->authorize('view', $product);
     }
 
     /**
@@ -72,7 +79,9 @@ class ProductsController extends Controller
     public function edit(string $id)
     {
         $product = Product::findOrFail($id);
-        $tags= implode(',', $product->tags()->pluck('name')->toArray());
+        $this->authorize('update', $product);
+
+        $tags = implode(',', $product->tags()->pluck('name')->toArray());
         $tags = implode(',', $product->tags()->pluck('name')->toArray());
         // dd($tags);
         return view('dashboard.products.edit', compact('product', 'tags'));
@@ -83,17 +92,18 @@ class ProductsController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        $product->update( $request->except('tags') );
+        $this->authorize('update', $product);
+        $product->update($request->except('tags'));
 
-        $tags = json_decode($request->post('tags') );
-        $tag_ids= [];
+        $tags = json_decode($request->post('tags'));
+        $tag_ids = [];
 
-        $saved_tags= Tag::all();
-        foreach($tags as $item){
-            $slug= Str::slug($item->value);
-            $tag= $saved_tags->where('slug', $slug)->first();
-            if(!$tag){
-                $tag= Tag::create([
+        $saved_tags = Tag::all();
+        foreach ($tags as $item) {
+            $slug = Str::slug($item->value);
+            $tag = $saved_tags->where('slug', $slug)->first();
+            if (!$tag) {
+                $tag = Tag::create([
                     'name' => $item->value,
                     'slug' => $slug,
                 ]);
@@ -109,9 +119,11 @@ class ProductsController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $product = Product::findOrFail($id);
+        $this->authorize('delete', $product);
     }
-    public function trash(){
+    public function trash()
+    {
         // $products = Product::onlyTrashed()->paginate(7);
         // return view('dashboard.products.trash', compact('products'));
     }
@@ -123,5 +135,4 @@ class ProductsController extends Controller
         }
         return $request->file('image')->store('products', 'public');
     }
-
 }

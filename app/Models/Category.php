@@ -12,7 +12,8 @@ use Illuminate\Validation\Rule;
 
 class Category extends Model
 {
-    use SoftDeletes, HasFactory;
+    // use SoftDeletes, HasFactory;
+    use HasFactory;
 
     protected $fillable = [
         'name',

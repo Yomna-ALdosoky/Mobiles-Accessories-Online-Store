@@ -1,13 +1,16 @@
 <?php
 
+use App\Http\Controllers\Dashboard\AdminController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Dashboard\CategoriesController;
 
 use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Dashboard\ImportProductsController;
 use App\Http\Controllers\Dashboard\ProductsController;
 use App\Http\Controllers\Dashboard\ProfileController;
 use App\Http\Controllers\Dashboard\RolesController;
+use App\Http\Controllers\Dashboard\UsersController;
 use App\Http\Middleware\checkUserType;
 
 Route::group([
@@ -27,7 +30,15 @@ Route::group([
 
     Route::resource('/categories', CategoriesController::class);
 
+    Route::get('products/import', [ImportProductsController::class, 'create'])->name('products.import');
+    Route::post('products/import', [ImportProductsController::class, 'store']);
     Route::get('products/trash', [ProductsController::class, 'trash'])->name('products.trash');
+
     Route::resource('/products', ProductsController::class);
     Route::resource('/roles', RolesController::class);
+
+    Route::resources([
+        'users' => UsersController::class,
+        'admins' => AdminController::class,
+    ]);
 });
