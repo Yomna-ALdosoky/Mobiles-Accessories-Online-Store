@@ -32,13 +32,13 @@
                             <div class="row">
                                 <div class="col-12 mb-2">
                                     <a class="btn google-btn w-100"
-                                        href="{{ route('auth.socilaite.redirect', 'google') }}">
+                                        href="{{ route('auth.social.redirect', 'google') }}">
                                         <i class="lni lni-google"></i> {{ __('Google login') }}
                                     </a>
                                 </div>
                                 <div class="col-12 mb-2">
                                     <a class="btn facebook-btn w-100"
-                                        href="{{ route('auth.socilaite.redirect', 'facebook') }}">
+                                        href="{{ route('auth.social.redirect', 'facebook') }}">
                                         <i class="lni lni-facebook-filled"></i> {{ __('Facebook login') }}
                                     </a>
                                 </div>

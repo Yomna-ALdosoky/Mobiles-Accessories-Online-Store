@@ -24,6 +24,7 @@ class SocialLoginController extends Controller
     {
         try {
             $provider_user = Socialite::driver($provider)->user();
+
             $socialAccount = \App\Models\UserSocialAccount::where([
                 'provider' => $provider,
                 'provider_id' => $provider_user->id,
@@ -38,7 +39,7 @@ class SocialLoginController extends Controller
                     $user = User::create([
                         'name' => $provider_user->name,
                         'email' => $provider_user->email,
-                        'password' => Hash::make(\Illuminate\Support\Str::random(16)),
+                        'password' => null,
                     ]);
                 }
 

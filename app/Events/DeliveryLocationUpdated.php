@@ -1,0 +1,60 @@
+<?php
+
+namespace App\Events;
+
+use App\Models\Delivery;
+use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
+
+class DeliveryLocationUpdated implements ShouldBroadcast
+{
+    use Dispatchable, InteractsWithSockets, SerializesModels;
+
+    public $lat;
+
+    public $lng;
+    protected $delivery;
+
+
+    /**
+     * Create a new event instance.
+     */
+    public function __construct(Delivery $delivery, $lat, $lng)
+    {
+        $this->delivery = $delivery;
+        $this->lat = $lat;
+        $this->lng = $lng;
+    }
+
+    /**
+     * Get the channels the event should broadcast on.
+     *
+     * @return array<int, \Illuminate\Broadcasting\Channel>
+     */
+    public function broadcastOn(): array
+    {
+        return [
+            new PrivateChannel('Deliveries.' . $this->delivery->order_id),
+        ];
+    }
+
+
+
+    public function broadcastWith()
+    {
+        return [
+            'lat' => $this->lat,
+            'lng' => $this->lng,
+            'status' => $this->delivery->status,
+        ];
+    }
+
+
+    public function broadcastAs()
+    {
+        return 'location-updated';
+    }
+}

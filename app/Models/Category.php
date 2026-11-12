@@ -5,15 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Product;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Spatie\Translatable\HasTranslations;
 
 use Illuminate\Validation\Rule;
 
 class Category extends Model
 {
     // use SoftDeletes, HasFactory;
-    use HasFactory;
+    use HasFactory, HasTranslations;
 
     protected $fillable = [
         'name',
@@ -24,6 +27,11 @@ class Category extends Model
         'status',
     ];
 
+    public $translatable = [
+        'name',
+        'description',
+    ];
+
     public function products()
     {
         return $this->hasMany(Product::class, 'category_id', 'id');
@@ -31,9 +39,7 @@ class Category extends Model
 
     public function parent()
     {
-        return $this->belongsTo(Category::class, 'parent_id', 'id')->withDefault([
-            'name' => 'Main Category'
-        ]);
+        return $this->belongsTo(Category::class, 'parent_id', 'id');
     }
 
     public function posts()
@@ -44,6 +50,11 @@ class Category extends Model
     public function children()
     {
         return $this->hasMany(Category::class, 'parent_id', 'id');
+    }
+
+    public function blogs()
+    {
+        return $this->hasMany(Blog::class);
     }
 
     public function scopeFilter(Builder $builder, $filters)
@@ -85,4 +96,30 @@ class Category extends Model
     {
         $builder->where('status', '=', 'active');
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($category) {
+            if (empty($category->slug)) {
+                $category->slug = Str::slug($category->name);
+            }
+        });
+
+        static::updating(function ($category) {
+            if (empty($category->slug)) {
+                $category->slug = Str::slug($category->name);
+            }
+        });
+    }
+
+    // protected function name(): Attribute
+    // {
+    //     return Attribute::make(
+    //         get: fn($value) => json_decode($value, true)[app()->getLocale()]
+    //             ?? json_decode($value, true)['en']
+    //             ?? $value
+    //     );
+    // }
 }

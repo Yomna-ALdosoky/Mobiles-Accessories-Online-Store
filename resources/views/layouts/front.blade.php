@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html class="no-js" lang="zxx">
+<html lang="{{ app()->getLocale() }}" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">
+{{-- <html class="no-js" lang="ar" dir="rtl"> --}}
 
 <head>
     <meta charset="utf-8" />
@@ -9,17 +10,118 @@
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/images/favicon.svg') }}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <!-- ========================= CSS here ========================= -->
+    @if(app()->getLocale() === 'ar')
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.rtl.min.css') }}" />
+    @else
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}" />
+    @endif
+
     <link rel="stylesheet" href="{{ asset('assets/css/LineIcons.3.0.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/tiny-slider.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/glightbox.min.css') }}" />
+
+    @if(app()->getLocale() === 'ar')
+    <link rel="stylesheet" href="{{ asset('assets/css/main.rtl.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/rtl-fix.css') }}" />
+    @else
     <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}" />
+    @endif
 
     <style>
         .topbar .container {
             display: block !important;
+        }
+
+        /* .single-category .images img {
+            max-height: 250px;
+            width: auto;
+            object-fit: contain;
+            margin-right: -20px;
+        } */
+
+        /* .single-category .images img {
+            max-height: 250px;
+            width: auto;
+            object-fit: contain;
+            margin-inline-end: -20px;
+        } */
+        .single-category .images img {
+            max-width: 45%;
+        }
+
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #25d366;
+            color: #FFF;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 32px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 9999;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            animation: pulse-whatsapp 2s infinite;
+        }
+
+        .whatsapp-tooltip {
+            position: absolute;
+            right: 75px;
+            background-color: #ffffff;
+            color: #333333;
+            padding: 10px 16px;
+            border-radius: 15px;
+            font-size: 13px;
+            font-weight: 600;
+            white-space: nowrap;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            opacity: 1;
+            visibility: visible;
+            text-align: right;
+            line-height: 1.4;
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+
+        .whatsapp-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 100%;
+            transform: translateY(-50%);
+            border-width: 6px;
+            border-style: solid;
+            border-color: transparent transparent transparent #ffffff;
+        }
+
+        .whatsapp-float:hover {
+            background-color: #20ba5a;
+            color: #FFF;
+            transform: scale(1.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 6px 15px rgba(0, 0, 0, 0.3);
+            animation: none;
+        }
+
+        @keyframes pulse-whatsapp {
+            0% {
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5);
+            }
+
+            70% {
+                box-shadow: 0 0 0 15px rgba(37, 211, 102, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+            }
         }
     </style>
 
@@ -28,14 +130,6 @@
 </head>
 
 <body>
-    <!--[if lte IE 9]>
-      <p class="browserupgrade">
-        You are using an <strong>outdated</strong> browser. Please
-        <a href="https://browsehappy.com/">upgrade your browser</a> to improve
-        your experience and security.
-      </p>
-    <![endif]-->
-
     <!-- Preloader -->
     <div class="preloader">
         <div class="preloader-inner">
@@ -61,27 +155,21 @@
                                         <form action="{{ route('currency.store') }}" method="post">
                                             @csrf
                                             @php
-                                            // 1. تحديد لغة الموقع الحالية
                                             $locale = App::getLocale();
-
-                                            // 2. فلترة العملات الإضافية (بجانب الدولار) بناءً على اللغة
                                             $extraCurrencies = match ($locale) {
-                                            'en', 'ar' => ['EGP', 'EUR', 'TRY', 'SAR'], // اللغات الكاملة
-                                            'fr' => ['EUR'], // فرنسا
-                                            'tr' => ['TRY'], // تركيا
-                                            'ko' => ['EUR'], // كوريا
+                                            'en', 'ar' => ['EGP', 'EUR', 'TRY', 'SAR'],
+                                            'fr' => ['EUR'],
+                                            'tr' => ['TRY'],
+                                            'ko' => ['EUR'],
                                             default => []
                                             };
                                             @endphp
 
                                             <select name="currency_code" onchange="this.form.submit()">
-                                                {{-- الدولار خيار أساسي ثابت أول القائمة دايماً --}}
                                                 <option value="USD" @selected('USD'==session('currency_code'))>
                                                     {{ __('USD') }} (USD)
                                                 </option>
 
-                                                {{-- الـ Loop السحرية والنضيفة اللي بتطبع العملات المفلترة بدون تكرار
-                                                كود الـ HTML --}}
                                                 @foreach($extraCurrencies as $code)
                                                 <option value="{{ $code }}" @selected($code==session('currency_code'))>
                                                     {{ __($code) }} ({{ $code }})
@@ -97,9 +185,7 @@
                                             <select name="locale" onchange="location = this.value;">
                                                 @foreach(LaravelLocalization::getSupportedLocales() as $localeCode =>
                                                 $properties)
-                                                <option
-                                                    value="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}"
-                                                    @selected($localeCode==App::currentLocale())>
+                                                <option value="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}" @selected($localeCode==App::currentLocale())>
                                                     {{ \Illuminate\Support\Str::ucfirst($properties['native']) }}
                                                 </option>
                                                 @endforeach
@@ -115,6 +201,13 @@
                             <ul class="useful-links">
                                 <li><a href="{{ route('home') }}">{{ __('Home') }}</a></li>
                                 <li><a href="{{ route('aboutUs') }}">{{ __('About Us') }}</a></li>
+                                @auth
+                                <li>
+                                    <a href="{{ route('orders.index') }}">
+                                        {{ __('My Orders') }}
+                                    </a>
+                                </li>
+                                @endauth
                                 <li><a href="{{ route('contactUs') }}">{{ __('Contact Us')}}</a></li>
                             </ul>
                         </div>
@@ -128,14 +221,19 @@
                             </div>
                             <ul class="user-login">
                                 <li>
-                                    <a href="{{ route('logout') }}"
-                                        onclick="event.preventDefault(); document.getElementById('logout').submit()">{{
-                                        __('Sign Out') }}</a>
+                                    <a href="{{ route('user-password.edit') }}">
+                                        {{ (Auth::user()->isSocialUser() && !Auth::user()->hasPassword()) ?
+                                        __('Set Password') : __('Change Password') }}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout').submit()">
+                                        {{ __('Sign Out') }}
+                                    </a>
                                 </li>
                                 <form action="{{ route('logout') }}" id="logout" method="post" style="display: none">
                                     @csrf
                                 </form>
-
                             </ul>
                             @else
                             <div class="user">
@@ -169,46 +267,46 @@
                         <!-- End Header Logo -->
                     </div>
                     <div class="col-lg-5 col-md-7 d-xs-none">
-                        <!-- Start Main Menu Search -->
                         <div class="main-menu-search">
                             <!-- navbar search start -->
-                            <div class="navbar-search search-style-5">
-                                <div class="search-select">
-                                    <div class="select-position">
-                                        <select id="select1">
-                                            <option selected>{{ __('All') }}</option>
-                                            <option value="1">option 01</option>
-                                            <option value="2">option 02</option>
-                                            <option value="3">option 03</option>
-                                            <option value="4">option 04</option>
-                                            <option value="5">option 05</option>
-                                        </select>
+                            <form action="{{ route('shop.index') }}" method="GET">
+                                <div class="navbar-search search-style-5">
+                                    <div class="search-select">
+                                        <div class="select-position">
+                                            <select name="category_id" id="select1">
+                                                <option value="">{{ __('All') }}</option>
+                                                @foreach($mega_categories as $category)
+                                                <option value="{{ $category->id }}" {{ request('category_id')==$category->id ? 'selected' : '' }}>
+                                                    {{ $category->name }}
+                                                </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="search-input">
+                                        <input type="text" name="search" value="{{ request('search') }}" placeholder="{{ __('Search') }}">
+                                    </div>
+                                    <div class="search-btn">
+                                        <button type="submit"><i class="lni lni-search-alt"></i></button>
                                     </div>
                                 </div>
-                                <div class="search-input">
-                                    <input type="text" placeholder="{{ __('Search') }}">
-                                </div>
-                                <div class="search-btn">
-                                    <button><i class="lni lni-search-alt"></i></button>
-                                </div>
-                            </div>
-                            <!-- navbar search Ends -->
+                            </form>
+                            <!-- navbar search end -->
                         </div>
-                        <!-- End Main Menu Search -->
                     </div>
                     <div class="col-lg-4 col-md-2 col-5">
                         <div class="middle-right-area">
                             <div class="nav-hotline">
                                 <i class="lni lni-phone"></i>
                                 <h3>{{ __('Hotline') }}:
-                                    <span>(+100) 123 456 7890</span>
+                                    <span>{{ $settings->primary_phone }}</span>
                                 </h3>
                             </div>
                             <div class="navbar-cart">
                                 <div class="wishlist">
-                                    <a href="javascript:void(0)">
+                                    <a href="{{ route('wishlist.index') }}">
                                         <i class="lni lni-heart"></i>
-                                        <span class="total-items">0</span>
+                                        <span class="total-items">{{ auth()->check() ? auth()->user()->wishlist()->count() : 0 }}</span>
                                     </a>
                                 </div>
                                 <x-cart-menu />
@@ -228,38 +326,34 @@
                         <div class="mega-category-menu">
                             <span class="cat-button"><i class="lni lni-menu"></i>{{ __('All Categories') }}</span>
                             <ul class="sub-category">
-                                <li><a href="product-grids.html">Electronics <i class="lni lni-chevron-right"></i></a>
+                                @foreach($mega_categories as $category)
+                                <li>
+                                    <a href="{{ route('categories.show', $category->slug ?? $category->id) }}">
+                                        {{ $category->name }}
+                                        @if($category->children->isNotEmpty())
+                                        <i class="lni lni-chevron-right"></i>
+                                        @endif
+                                    </a>
+
+                                    @if($category->children->isNotEmpty())
                                     <ul class="inner-sub-category">
-                                        <li><a href="product-grids.html">Digital Cameras</a></li>
-                                        <li><a href="product-grids.html">Camcorders</a></li>
-                                        <li><a href="product-grids.html">Camera Drones</a></li>
-                                        <li><a href="product-grids.html">Smart Watches</a></li>
-                                        <li><a href="product-grids.html">Headphones</a></li>
-                                        <li><a href="product-grids.html">MP3 Players</a></li>
-                                        <li><a href="product-grids.html">Microphones</a></li>
-                                        <li><a href="product-grids.html">Chargers</a></li>
-                                        <li><a href="product-grids.html">Batteries</a></li>
-                                        <li><a href="product-grids.html">Cables & Adapters</a></li>
+                                        @foreach($category->children as $child)
+                                        <li>
+                                            <a href="{{ route('categories.show', $child->slug ?? $child->id) }}">
+                                                {{ $child->name }}
+                                            </a>
+                                        </li>
+                                        @endforeach
                                     </ul>
+                                    @endif
                                 </li>
-                                <li><a href="product-grids.html">accessories</a></li>
-                                <li><a href="product-grids.html">Televisions</a></li>
-                                <li><a href="product-grids.html">best selling</a></li>
-                                <li><a href="product-grids.html">top 100 offer</a></li>
-                                <li><a href="product-grids.html">sunglass</a></li>
-                                <li><a href="product-grids.html">watch</a></li>
-                                <li><a href="product-grids.html">man’s product</a></li>
-                                <li><a href="product-grids.html">Home Audio & Theater</a></li>
-                                <li><a href="product-grids.html">Computers & Tablets </a></li>
-                                <li><a href="product-grids.html">Video Games </a></li>
-                                <li><a href="product-grids.html">Home Appliances </a></li>
+                                @endforeach
                             </ul>
                         </div>
                         <!-- End Mega Category Menu -->
                         <!-- Start Navbar -->
                         <nav class="navbar navbar-expand-lg">
-                            <button class="navbar-toggler mobile-menu-btn" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            <button class="navbar-toggler mobile-menu-btn" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                                 aria-expanded="false" aria-label="Toggle navigation">
                                 <span class="toggler-icon"></span>
                                 <span class="toggler-icon"></span>
@@ -273,10 +367,8 @@
                                     </li>
 
                                     <li class="nav-item">
-                                        <a class="dd-menu active collapsed" href="javascript:void(0)"
-                                            data-bs-toggle="collapse" data-bs-target="#submenu-1-2"
-                                            aria-controls="navbarSupportedContent" aria-expanded="false"
-                                            aria-label="Toggle navigation">{{ __('Pages') }}</a>
+                                        <a class="dd-menu active collapsed" href="javascript:void(0)" data-bs-toggle="collapse" data-bs-target="#submenu-1-2" aria-controls="navbarSupportedContent"
+                                            aria-expanded="false" aria-label="Toggle navigation">{{ __('Pages') }}</a>
                                         <ul class="sub-menu collapse" id="submenu-1-2">
                                             <li class="nav-item"><a href="{{ route('aboutUs') }}">{{ __('About Us')
                                                     }}</a></li>
@@ -284,8 +376,7 @@
                                             <li class="nav-item active"><a href="{{ route('login') }}">{{ __('Sign
                                                     In')}}</a></li>
                                             @auth
-                                            <li class="nav-item"><a
-                                                    href="{{ route('front.2fa') }}">{{__('Security')}}</a>
+                                            <li class="nav-item"><a href="{{ route('front.2fa') }}">{{__('Security')}}</a>
                                             </li>
                                             @endauth
                                             <li class="nav-item"><a href="{{ route('register') }}">{{
@@ -293,13 +384,11 @@
                                         </ul>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="dd-menu collapsed" href="javascript:void(0)" data-bs-toggle="collapse"
-                                            data-bs-target="#submenu-1-3" aria-controls="navbarSupportedContent"
+                                        <a class="dd-menu collapsed" href="javascript:void(0)" data-bs-toggle="collapse" data-bs-target="#submenu-1-3" aria-controls="navbarSupportedContent"
                                             aria-expanded="false" aria-label="Toggle navigation">{{ __('Shop') }}</a>
                                         <ul class="sub-menu collapse" id="submenu-1-3">
-                                            <li class="nav-item"><a href="product-grids.html">{{ __('Shop Grid') }}</a>
-                                            </li>
-                                            <li class="nav-item"><a href="product-list.html">{{ __('Shop List') }}</a>
+                                            <li class="nav-item"><a href="{{ route('shop.index') }}">{{ __('Shop')
+                                                    }}</a>
                                             </li>
                                             <li class="nav-item"><a href="{{ route('cart.index') }}">{{ __('Cart')
                                                     }}</a></li>
@@ -308,18 +397,8 @@
                                         </ul>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="dd-menu collapsed" href="javascript:void(0)" data-bs-toggle="collapse"
-                                            data-bs-target="#submenu-1-4" aria-controls="navbarSupportedContent"
-                                            aria-expanded="false" aria-label="Toggle navigation">{{ __('Blog')}}</a>
-                                        <ul class="sub-menu collapse" id="submenu-1-4">
-                                            <li class="nav-item"><a href="blog-grid-sidebar.html">{{ __('Blog Grid
-                                                    Sidebar') }}</a>
-                                            </li>
-                                            <li class="nav-item"><a href="blog-single.html">{{ __('Blog Single') }}</a>
-                                            </li>
-                                            <li class="nav-item"><a href="blog-single-sidebar.html">{{ __('Blog Single
-                                                    Sidebar') }}</a></li>
-                                        </ul>
+                                        <a href="{{ route('blogs.index') }}" aria-label="Toggle navigation">
+                                            {{ __('Blogs') }}</a>
                                     </li>
                                     <li class="nav-item">
                                         <a href="{{ route('contactUs') }}" aria-label="Toggle navigation">
@@ -337,16 +416,18 @@
                         <h5 class="title">{{ __('Follow Us') }}:</h5>
                         <ul>
                             <li>
-                                <a href="javascript:void(0)"><i class="lni lni-facebook-filled"></i></a>
+                                <a href="{{ $settings->facebook_url }}"><i class="lni lni-facebook-filled"></i></a>
                             </li>
                             <li>
-                                <a href="javascript:void(0)"><i class="lni lni-twitter-original"></i></a>
+                                <a href="{{ $settings->linkedin_url }}"><i class="lni lni-linkedin-original"></i></a>
                             </li>
                             <li>
-                                <a href="javascript:void(0)"><i class="lni lni-instagram"></i></a>
+                                <a href="{{ $settings->instagram_url }}"><i class="lni lni-instagram"></i></a>
                             </li>
                             <li>
-                                <a href="javascript:void(0)"><i class="lni lni-skype"></i></a>
+                                <a
+                                    href="{{ Str::startsWith($settings->whatsapp_number, 'http') ? $settings->whatsapp_number : 'https://wa.me/' . preg_replace('/[^0-9]/', '', $settings->whatsapp_number) }}"><i
+                                        class="lni lni-whatsapp"></i></a>
                             </li>
                         </ul>
                     </div>
@@ -385,79 +466,99 @@
                                 </h4>
                                 <div class="newsletter-form-head">
                                     <form action="#" method="get" target="_blank" class="newsletter-form">
-                                        <input name="EMAIL" placeholder="{{ __('Email address here...') }}"
-                                            type="email">
+                                        <input name="EMAIL" placeholder="{{ __('Email address here...') }}" type="email">
                                         <div class="button">
-                                            <button class="btn">{{ __('Subscribe') }}<span
-                                                    class="dir-part"></span></button>
+                                            <button class="btn">{{ __('Subscribe') }}<span class="dir-part"></span></button>
                                         </div>
                                     </form>
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
         </div>
+
         <div class="footer-middle">
             <div class="container">
                 <div class="bottom-inner">
                     <div class="row">
-                        <div class="col-lg-3 col-md-6 col-12">
+                        <div class="col-lg-5 col-md-6 col-12">
                             <div class="single-footer f-contact">
                                 <h3>{{ __('Get In Touch With Us') }}</h3>
-                                <p class="phone">{{ __('Phone') }}: +1 (900) 33 169 7720</p>
-                                <ul>
-                                    <li><span>{{ __('Monday-Friday') }}: </span> 9.00 am - 8.00 pm</li>
-                                    <li><span>{{ __('Saturday') }}: </span> 10.00 am - 6.00 pm</li>
-                                </ul>
-                                <p class="mail">
-                                    <a href="mailto:support@shopgrids.com">support@shopgrids.com</a>
-                                </p>
+
+                                <div class="d-flex align-items-center gap-2 mb-2" style="color: #d6d6d6;">
+                                    <i class="fas fa-phone-alt" style="width: 16px;"></i>
+                                    <span>{{ $settings?->primary_phone }}</span>
+                                </div>
+                                <div class="d-flex align-items-start gap-2 mb-2" style="color: #d6d6d6;">
+                                    <i class="fas fa-map-marker-alt mt-1" style="width: 16px;"></i>
+                                    <span>{{ $settings?->address }}</span>
+                                </div>
+                                <div class="d-flex align-items-center gap-2 mb-2">
+                                    <i class="fas fa-envelope" style="color: #d6d6d6; width: 16px;"></i>
+                                    <a href="mailto:{{ $settings?->support_email }}" style="color: #d6d6d6 !important;">
+                                        {{ $settings?->support_email }}
+                                    </a>
+                                </div>
+                                <div class="single-footer f-link mt-4">
+                                    <h6 class="mb-3 fw-bold" style="color: #d6d6d6; font-size: 13px; letter-spacing: 0.5px;">
+                                        {{ __('FOLLOW US:') }}
+                                    </h6>
+                                    <ul class="d-flex gap-3 list-unstyled mb-0">
+                                        <li>
+                                            <a href="{{ $settings->facebook_url }}" target="_blank" class="fs-5" title="Facebook">
+                                                <i class="lni lni-facebook-filled"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ $settings->linkedin_url }}" target="_blank" class="fs-5" title="LinkedIn">
+                                                <i class="lni lni-linkedin-original"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ $settings->instagram_url }}" target="_blank" class="fs-5" title="Instagram">
+                                                <i class="lni lni-instagram-original"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ Str::startsWith($settings->whatsapp_number, 'http') ? $settings->whatsapp_number : 'https://wa.me/' . preg_replace('/[^0-9]/', '', $settings->whatsapp_number) }}"
+                                                target="_blank" class="fs-5" title="WhatsApp">
+                                                <i class="lni lni-whatsapp"></i>
+                                            </a>
+                                        </li>
+
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-md-6 col-12">
-                            <div class="single-footer our-app">
-                                <h3>{{ __('Our Mobile App') }}</h3>
-                                <ul class="app-btn">
-                                    <li>
-                                        <a href="javascript:void(0)">
-                                            <i class="lni lni-apple"></i>
-                                            <span class="small-title">{{ __('Download on the') }}</span>
-                                            <span class="big-title">{{ __('App Store') }}</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:void(0)">
-                                            <i class="lni lni-play-store"></i>
-                                            <span class="small-title">{{ __('Download on the') }}</span>
-                                            <span class="big-title">{{ __('Google Play') }}</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6 col-12">
+                        <div class="col-lg-4 col-md-6 col-12">
                             <div class="single-footer f-link">
                                 <h3>{{ __('Information') }}</h3>
                                 <ul>
+                                    <li><a href="{{ route('home') }}">{{ __('Home') }}</a></li>
+
                                     <li><a href="{{ route('aboutUs') }}">{{ __('About Us') }}</a></li>
                                     <li><a href="{{ route('contactUs') }}">{{ __('Contact Us') }}</a></li>
-                                    <li><a href="javascript:void(0)">{{ __('Downloads') }}</a></li>
-                                    <li><a href="javascript:void(0)">{{ __('Sitemap') }}</a></li>
-                                    <li><a href="javascript:void(0)">{{ __('FAQs Page') }}</a></li>
+                                    <li><a href="{{ route('shop.index') }}">{{ __('Shop') }}</a></li>
+                                    <li><a href="{{ route('blogs.index') }}">{{ __('Blog') }}</a></li>
+
                                 </ul>
                             </div>
                         </div>
+
                         <div class="col-lg-3 col-md-6 col-12">
                             <div class="single-footer f-link">
                                 <h3>{{ __('Shop Departments') }}</h3>
                                 <ul>
-                                    <li><a href="javascript:void(0)">{{ __('Computers & Accessories') }}</a></li>
-                                    <li><a href="javascript:void(0)">{{ __('Smartphones & Tablets') }}</a></li>
-                                    <li><a href="javascript:void(0)">{{ __('TV, Video & Audio') }}</a></li>
-                                    <li><a href="javascript:void(0)">{{ __('Cameras, Photo & Video') }}</a></li>
-                                    <li><a href="javascript:void(0)">{{ __('Headphones') }}</a></li>
+                                    @if(isset($mega_categories) && $mega_categories->isNotEmpty())
+                                    @foreach($mega_categories->take(5) as $category)
+                                    <li><a href="{{ route('categories.show', $category->slug ?? $category->id) }}">{{
+                                            $category->name }}</a></li>
+                                    @endforeach
+                                    @endif
+
                                 </ul>
                             </div>
                         </div>
@@ -465,20 +566,16 @@
                 </div>
             </div>
         </div>
+
         <div class="footer-bottom">
             <div class="container">
                 <div class="inner-content">
                     <div class="row align-items-center">
                         <div class="col-lg-4 col-12">
-                            <div class="payment-gateway">
-                                <span>{{ __('We Accept') }}:</span>
-                                <img src="{{ asset('assets/images/footer/credit-cards-footer.png') }}" alt="#">
-                            </div>
                         </div>
                         <div class="col-lg-4 col-12">
                             <div class="copyright">
-                                <p>{{ __('Designed and Developed by') }} <a href="https://graygrids.com/" rel="nofollow"
-                                        target="_blank">GrayGrids</a></p>
+                                <p>{{ __('Designed and Developed by') }} <a href="https://www.linkedin.com/in/yomna-eldosoky/" rel="nofollow" target="_blank">Yomna ELdosoky</a></p>
                             </div>
                         </div>
                         <div class="col-lg-4 col-12">
@@ -493,9 +590,15 @@
     </footer>
     <!--/ End Footer Area -->
 
-    <!-- ========================= scroll-top ========================= -->
-    <a href="#" class="scroll-top">
-        <i class="lni lni-chevron-up"></i>
+    <a href="https://wa.me/201090202654?text={{ urlencode(__('Hello, I would like to inquire about a product in your store and technical support')) }}" class="whatsapp-float" target="_blank"
+        title="{{ __('Technical support via WhatsApp') }}">
+
+        <span class="whatsapp-tooltip">
+            {{ __('Hi 👋💙') }}<br>
+            {{ __('Need help with your order?') }}
+        </span>
+
+        <i class="lni lni-whatsapp"></i>
     </a>
 
     <!-- ========================= JS here ========================= -->

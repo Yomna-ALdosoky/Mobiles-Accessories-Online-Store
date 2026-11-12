@@ -1,0 +1,64 @@
+[dir="rtl"] .tns-outer,
+[dir="rtl"] .tns-ovh,
+[dir="rtl"] .tns-inner,
+[dir="rtl"] .tns-slider {
+    direction: ltr !important;
+}
+
+[dir="rtl"] .tns-item {
+    direction: rtl;
+    text-align: right;
+}
+
+[dir="rtl"] .hero-small-banner .content {
+    max-width: 50%;
+    margin-right: auto !important;
+    margin-left: 0 !important;
+    right: auto !important;
+    left: 0 !important;
+    padding: 30px !important;
+    text-align: right;
+}
+
+
+[dir="rtl"] .hero-area .hero-slider .single-slider .content,
+[dir="rtl"] .banner .single-banner:not(.right) .content {
+    max-width: 50%;
+    margin-right: auto !important;
+    margin-left: 0 !important;
+    right: auto !important;
+    left: 0 !important;
+    padding-top: 30px !important;
+    padding-bottom: 30px !important;
+    padding-left: 30px !important;
+    padding-right: 30px !important;
+    text-align: right;
+}
+
+[dir="rtl"] .single-banner.right .content {
+    max-width: 50%;
+    margin-left: auto !important;
+    margin-right: 0 !important;
+    left: auto !important;
+    right: 0 !important;
+    padding-top: 30px !important;
+    padding-bottom: 30px !important;
+    padding-left: 30px !important;
+    padding-right: 30px !important;
+    text-align: right;
+}
+
+[dir="rtl"] .price {
+    direction: rtl;
+    text-align: right;
+}
+
+[dir="rtl"] .price span {
+    unicode-bidi: isolate;
+    direction: ltr;
+    display: inline-block;
+}
+
+[dir="rtl"] .price span+span {
+    margin-inline-start: 8px;
+}

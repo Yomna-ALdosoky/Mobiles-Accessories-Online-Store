@@ -41,7 +41,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var list<string>
      */
     protected $hidden = [
-        'password',
+        // 'password',
         'remember_token',
         'two_factor_secret',
         'two_factor_recovery_codes',
@@ -60,6 +60,10 @@ class User extends Authenticatable implements MustVerifyEmail
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+    public function hasPassword(): bool
+    {
+        return !is_null($this->password);
     }
 
     public function profile()
@@ -80,5 +84,25 @@ class User extends Authenticatable implements MustVerifyEmail
     public function socialAccounts()
     {
         return $this->hasMany(UserSocialAccount::class);
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function isSocialUser(): bool
+    {
+        return !is_null($this->provider) || $this->socialAccounts()->exists();
+    }
+
+    public function wishlist()
+    {
+        return $this->hasMany(Wishlist::class);
+    }
+
+    public function hasInWishlist($productId): bool
+    {
+        return $this->wishlist()->where('product_id', $productId)->exists();
     }
 }

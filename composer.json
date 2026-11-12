@@ -3,21 +3,23 @@
     "name": "laravel/laravel",
     "type": "project",
     "description": "The skeleton application for the Laravel framework.",
-    "keywords": [
-        "laravel",
-        "framework"
-    ],
+    "keywords": ["laravel", "framework"],
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "codeat3/blade-simple-icons": "^8.12",
+        "filament/filament": "^5.7",
         "laravel/fortify": "^1.36",
         "laravel/framework": "^12.0",
         "laravel/sanctum": "^4.0",
         "laravel/socialite": "^5.28",
         "laravel/tinker": "^2.10.1",
         "mcamara/laravel-localization": "^2.4",
+        "owenvoke/blade-fontawesome": "^2.9",
         "pusher/pusher-php-server": "^7.2",
         "railsware/mailtrap-php": "^3.11",
+        "spatie/laravel-translatable": "^6.11",
+        "stripe/stripe-php": "^20.3",
         "symfony/http-client": "^7.4",
         "symfony/intl": "^7.4",
         "symfony/mailtrap-mailer": "^7.4"
@@ -67,7 +69,8 @@
         ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi"
+            "@php artisan package:discover --ansi",
+            "@php artisan filament:upgrade"
         ],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force"

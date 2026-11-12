@@ -15,6 +15,7 @@ class CartController extends Controller
      * Display a listing of the resource.
      */
     protected $cart;
+    
     public function __construct(CartRepository $cart)
     {
         $this->cart = $cart;

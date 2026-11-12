@@ -30,8 +30,7 @@ class CurrencyConverterController extends Controller
         //     Cache::put($cacheKey, $rate, now()->addMinutes(60));
         // }
         if (!$rate) {
-            // جلب المفتاح مباشرة وتمريره للكلاس لضمان إنها لا يمكن ترجع null
-            // $apiKey = config('services.currency_converter.api_key') ?? env('CURRENCY_API_KEY');
+
             $converter = app('currency.converter');
 
             $rate = $converter->convert($baseCurrencyCode, $currencyCode);

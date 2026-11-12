@@ -16,6 +16,7 @@
             </div>
         </div>
     </div>
+
     <section id="contact-us" class="contact-us section">
         <div class="container">
             <div class="contact-head">
@@ -23,7 +24,7 @@
                     <div class="col-12">
                         <div class="section-title">
                             <h2>{{ __('Contact Us') }}</h2>
-                            <p>{{ __('contact_section_desc') }}</p>
+                            <p>{{ $settings?->contact_section_desc }}</p>
                         </div>
                     </div>
                 </div>
@@ -35,61 +36,90 @@
                                     <i class="lni lni-map"></i>
                                     <h3>{{ __('Address') }}</h3>
                                     <ul>
-                                        <li>{{ __('store_address_details') }}</li>
+                                        <li>{{ $settings?->address ?? __('Address not available') }}</li>
                                     </ul>
                                 </div>
                                 <div class="single-info">
                                     <i class="lni lni-phone"></i>
                                     <h3>{{ __('Call us on') }}</h3>
                                     <ul>
-                                        <li><a href="tel:+18005554400">+1 800 555 44 00 ({{ __('Toll free') }})</a></li>
-                                        <li><a href="tel:+321556667890">+321 55 666 7890</a></li>
+                                        @if($settings?->primary_phone)
+                                        <li><a href="tel:{{ $settings->primary_phone }}">{{ $settings->primary_phone
+                                                }}</a></li>
+                                        @endif
+                                        @if($settings?->secondary_phone)
+                                        <li><a href="tel:{{ $settings->secondary_phone }}">{{ $settings->secondary_phone
+                                                }}</a></li>
+                                        @endif
                                     </ul>
                                 </div>
                                 <div class="single-info">
                                     <i class="lni lni-envelope"></i>
                                     <h3>{{ __('Mail at') }}</h3>
                                     <ul>
-                                        <li><a href="mailto:support@shopgrids.com">support@shopgrids.com</a></li>
-                                        <li><a href="mailto:career@shopgrids.com">career@shopgrids.com</a></li>
+                                        @if($settings?->support_email)
+                                        <li><a href="mailto:{{ $settings->support_email }}">{{ $settings->support_email
+                                                }}</a></li>
+                                        @endif
+                                        @if($settings?->career_email)
+                                        <li><a href="mailto:{{ $settings->career_email }}">{{ $settings->career_email
+                                                }}</a></li>
+                                        @endif
                                     </ul>
                                 </div>
+
                             </div>
                         </div>
+
                         <div class="col-lg-8 col-md-12 col-12">
                             <div class="contact-form-head">
                                 <div class="form-main">
-                                    <form class="form" method="post" action="assets/mail/mail.php">
+                                    @if(session('success'))
+                                    <div class="alert alert-success mb-3">
+                                        {{ session('success') }}
+                                    </div>
+                                    @endif
+                                    <form class="form" method="post" action="{{ route('contact.store') }}">
                                         @csrf
                                         <div class="row">
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <input name="name" type="text" placeholder="{{ __('Your Name') }}"
-                                                        required="required">
+                                                    <input name="name" type="text" value="{{ old('name') }}"
+                                                        placeholder="{{ __('Your Name') }}" required>
+                                                    @error('name') <small class="text-danger d-block mt-1">{{ $message
+                                                        }}</small> @enderror
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <input name="subject" type="text"
-                                                        placeholder="{{ __('Your Subject') }}" required="required">
+                                                    <input name="subject" type="text" value="{{ old('subject') }}"
+                                                        placeholder="{{ __('Your Subject') }}" required>
+                                                    @error('subject') <small class="text-danger d-block mt-1">{{
+                                                        $message }}</small> @enderror
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <input name="email" type="email"
-                                                        placeholder="{{ __('Your Email') }}" required="required">
+                                                    <input name="email" type="email" value="{{ old('email') }}"
+                                                        placeholder="{{ __('Your Email') }}" required>
+                                                    @error('email') <small class="text-danger d-block mt-1">{{ $message
+                                                        }}</small> @enderror
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <input name="phone" type="text" placeholder="{{ __('Your Phone') }}"
-                                                        required="required">
+                                                    <input name="phone" type="text" value="{{ old('phone') }}"
+                                                        placeholder="{{ __('Your Phone') }}" required>
+                                                    @error('phone') <small class="text-danger d-block mt-1">{{ $message
+                                                        }}</small> @enderror
                                                 </div>
                                             </div>
                                             <div class="col-12">
                                                 <div class="form-group message">
-                                                    <textarea name="message"
-                                                        placeholder="{{ __('Your Message') }}"></textarea>
+                                                    <textarea name="message" placeholder="{{ __('Your Message') }}"
+                                                        required>{{ old('message') }}</textarea>
+                                                    @error('message') <small class="text-danger d-block mt-1">{{
+                                                        $message }}</small> @enderror
                                                 </div>
                                             </div>
                                             <div class="col-12">

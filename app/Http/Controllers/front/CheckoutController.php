@@ -19,9 +19,7 @@ class CheckoutController extends Controller
     public function create(CartRepository $cart)
     {
         if ($cart->get()->count() == 0) {
-            // return redirect()->route('home');
             throw new InvalidOrderException('cart is empty');
-            // return redirect()->route('home')->with('info', 'تيسيت: الكارت فاضي والرسالة شغال!');
         }
         return view('front.checkout', [
             'cart' => $cart,
@@ -46,11 +44,15 @@ class CheckoutController extends Controller
         DB::beginTransaction();
         try {
             foreach ($items as $store_id => $cart_items) {
+                $total = collect($cart_items)->sum(function ($item) {
+                    return $item->product->price * $item->quantity;
+                });
                 $order = Order::create([
                     'store_id' => $store_id,
                     'user_id'  => Auth::id(),
                     'payment_method' => 'cod',
                     'number' => Order::getNextOrderNumber(),
+                    'total' => $total,
                 ]);
                 foreach ($cart_items as $item) {
                     OrderItem::create([
@@ -59,6 +61,7 @@ class CheckoutController extends Controller
                         'product_name' => $item->product->name,
                         'price' => $item->product->price,
                         'quantity' => $item->quantity,
+
                     ]);
                 }
                 foreach ($request->post('addr') as $type => $address) {
@@ -67,13 +70,12 @@ class CheckoutController extends Controller
                 }
             }
             DB::commit();
-
-            // event('order.created', $order, Auth::user());
+            $cart->empty();
             event(new OrderCreated($order));
         } catch (Throwable $e) {
             DB::rollBack();
             throw $e;
         }
-        return redirect()->route('home');
+        return redirect()->route('orders.payments.create', $order->id);
     }
 }

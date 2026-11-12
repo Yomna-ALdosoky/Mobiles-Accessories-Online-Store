@@ -19,7 +19,6 @@ class Currency
     {
         $baseCurrency = config('app.currency', 'USD');
 
-        $formatter = new NumberFormatter(config('app.locale'), NumberFormatter::CURRENCY);
         if ($currency === null) {
             $currency = Session::get('currency_code', $baseCurrency);
         }
@@ -27,6 +26,9 @@ class Currency
             $rate = Cache::get('currency_rate_' . $currency, 1);
             $amount = $amount * $rate;
         }
+
+        $formatter = new NumberFormatter('en_US', NumberFormatter::CURRENCY);
+
         return $formatter->formatCurrency($amount, $currency);
     }
 }

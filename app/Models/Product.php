@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Spatie\Translatable\HasTranslations;
 
 class Product extends Model
 {
-    use SoftDeletes, HasFactory;
+    use SoftDeletes, HasFactory, HasTranslations;
 
     protected $fillable = [
         'store_id',
@@ -25,14 +26,24 @@ class Product extends Model
         'options',
         'rating',
         'featured',
+        'quantity',
         'status',
         'brand_id'
     ];
+    public $translatable = [
+        'name',
+        'description'
+    ];
     protected $hidden = [
-        'image',
+        // 'image',
         'created_at',
         'updated_at',
         'deleted_at'
+    ];
+    protected $casts = [
+        'options' => 'array',
+        'featured' => 'boolean',
+        'rating' => 'float',
     ];
     protected $appends = [
         'image_url',
@@ -62,6 +73,14 @@ class Product extends Model
     {
         return $this->belongsTo(Brand::class, 'brand_id', 'id');
     }
+    public function images()
+    {
+        return $this->hasMany(ProductImage::class, 'product_id');
+    }
+    public function coverImage()
+    {
+        return $this->hasOne(ProductImage::class)->where('is_primary', true)->withDefault();
+    }
 
     protected static function booted()
     {
@@ -73,7 +92,9 @@ class Product extends Model
         });
 
         static::creating(function (Product $product) {
-            $product->slug = Str::slug($product->name);
+            if (empty($product->slug)) {
+                $product->slug = Str::slug($product->name) . '-' . Str::lower(Str::random(5));
+            }
         });
     }
 
@@ -84,14 +105,15 @@ class Product extends Model
 
     public function getImageUrlAttribute()
     {
+        $imagePath = $this->coverImage->image ?? $this->images->first()?->image;
 
-        if (!$this->image) {
-            return "https://www.opelgtsource.com/assets/default_product.png";
+        if (!$imagePath) {
+            return asset('assets/images/default-product.png');
         }
-        if (Str::startsWith($this->image, ['http://', 'https://'])) {
-            return $this->image;
+        if (Str::startsWith($imagePath, ['http://', 'https://'])) {
+            return $imagePath;
         }
-        return asset('storage/' . $this->image);
+        return asset('storage/' . $imagePath);
     }
 
     public function getSalePercentAttribute()
@@ -101,17 +123,6 @@ class Product extends Model
         }
         return round(100 - (100 * $this->price / $this->compare_price), 1);
     }
-
-    // public function scopeFilter(Builder $builder, $filters)
-    // {
-    //     $builder->when($filters['name'] ?? null, function ($query, $value) {
-    //         $query->where('name', 'LIKE', "%{$value}%");
-    //     });
-
-    //     $builder->when($filters['status'] ?? null, function ($query, $value) {
-    //         $query->where('status', 'LIKE', $value);
-    //     });
-    // }
     public function scopeFilter(Builder $builder, $filters)
     {
         $options = array_merge([
