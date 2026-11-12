@@ -262,7 +262,7 @@
                     <div class="col-lg-3 col-md-3 col-7">
                         <!-- Start Header Logo -->
                         <a class="navbar-brand" href="index.html">
-                            <img src="{{ asset('assets/images/logo/logo.svg') }}" alt="Logo">
+                            <img src="{{ asset('assets/images/logo/logo.jpg') }}" alt="Logo">
                         </a>
                         <!-- End Header Logo -->
                     </div>
@@ -590,8 +590,19 @@
     </footer>
     <!--/ End Footer Area -->
 
-    <a href="https://wa.me/201090202654?text={{ urlencode(__('Hello, I would like to inquire about a product in your store and technical support')) }}" class="whatsapp-float" target="_blank"
+    {{-- <a href="https://wa.me/201090202654?text={{ urlencode(__('Hello, I would like to inquire about a product in your store and technical support')) }}" class="whatsapp-float" target="_blank"
         title="{{ __('Technical support via WhatsApp') }}">
+
+        <span class="whatsapp-tooltip">
+            {{ __('Hi 👋💙') }}<br>
+            {{ __('Need help with your order?') }}
+        </span>
+
+        <i class="lni lni-whatsapp"></i>
+    </a> --}}
+
+
+    <a href="https://web.whatsapp.com/" class="whatsapp-float" target="_blank" rel="noopener noreferrer" title="{{ __('Technical support via WhatsApp') }}">
 
         <span class="whatsapp-tooltip">
             {{ __('Hi 👋💙') }}<br>
